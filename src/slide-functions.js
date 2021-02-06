@@ -29,17 +29,11 @@ export const slideRight = slides => {
 export const nextPosition = (slides, slideWidth, direction) => {
     const maxIndex = slides.length - 1
     for (let slide of slides) {
-        if (slide.props.nextIndex === null) continue
-        
         if (direction > 0) {
-            if (slide.props.currentIndex === 0) {
-                slide.props.nextPosition = slide.props.width * -1
-            } else {
-                slide.props.nextPosition = slide.props.nextIndex * slideWidth
-            }
+            slide.props.nextPosition = slide.props.currentIndex === 0 ? slide.props.width * -1 : slide.props.nextIndex * slideWidth
         } else {
-            slide.props.nextPosition = slide.props.nextIndex * slideWidth
-        }
+            slide.props.nextPosition = slide.props.currentIndex === maxIndex ? 0 : slide.props.nextIndex * slideWidth
+                }
     }
 }
 

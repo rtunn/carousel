@@ -1,4 +1,5 @@
 import {
+    cleanup,
     nextPosition,
     slideLeft,
     slideRight
@@ -24,8 +25,14 @@ export const animationManager = (container, slides, direction, numVisibleSlides,
     }
 
     nextPosition(slides, slideWidth, direction)
-    prepAnimation(container, slides, direction, numVisibleSlides, prepFn)
-    primaryAnimation(container, slides, direction, numVisibleSlides, primaryFn)
+    const prepPromises = prepAnimation(container, slides, direction, numVisibleSlides, prepFn)
+    Promise.all(prepPromises)
+        .then(_ => {
+            const primaryCompleted = Promise.all(primaryAnimation(container, slides, primaryFn))
+            primaryCompleted.then(_ => {
+                cleanup(slides)
+            })
+        })
 }
 
 /**
@@ -35,10 +42,11 @@ export const animationManager = (container, slides, direction, numVisibleSlides,
  * @param {Number} direction 1 or -1, where 1 means the slides are moving to the left and -1 means slides are moving to the right
  * @param {Number} numVisibleSlides integer indicating the number of slides to be displayed
  * @param {Function} animationFn function that performs the animation
+ * @returns {Array.<Promise>} 
  */
 const prepAnimation = (container, slides, direction, numVisibleSlides, animationFn) => {
-    const nextSlide = getNextSlide(slides, direction, numVisibleSlides)
-    animationFn(container, nextSlide, direction)
+    const offscreenSlides = getOffscreenSlides(slides, numVisibleSlides)
+    return animationFn(container, offscreenSlides, direction, numVisibleSlides)
 }
 
 /**
@@ -48,55 +56,10 @@ const prepAnimation = (container, slides, direction, numVisibleSlides, animation
  * @param {Number} direction 1 or -1, where 1 means the slides are moving to the left and -1 means slides are moving to the right
  * @param {Number} numVisibleSlides integer indicating the number of slides to be displayed
  * @param {Function} animationFn function that performs the animation
+ * @returns {Array.<Promise>}
  */
-const primaryAnimation = (container, slides, direction, numVisibleSlides, animationFn) => {
-    const activeSlides = getActiveSlides(slides, direction, numVisibleSlides)
-    animationFn(container, activeSlides)
-}
-
-/**
- * cleanupAnimation calls cleanup animation function on off-screen slides
- * @param {Array.<Object>} slides array of Slide instances
- * @param {Number} numVisibleSlides integer indicating the number of slides to be displayed
- * @param {Function} animationFn function that performs the animation
- */
-const cleanupAnimation = (slides, animationFn) => {
-    const offscreenSlides = getOffscreenSlides(slides)
-    animationFn(offscreenSlides)
-}  
-
-/**
- * getNextSlide returns the next slide
- * @param {Array.<Object>} slides array of Slide instances
- * @param {Number} direction 1 or -1, where 1 means the slides are moving to the left and -1 means slides are moving to the right
- * @param {Number} numVisibleSlides integer indicating the number of slides to be displayed
- * @returns {Object} returns a single Slide instance
- */
-const getNextSlide = (slides, direction, numVisibleSlides) => {
-    if (direction > 0) {
-        return slides.find(slide => slide.props.currentIndex == numVisibleSlides)
-    } else {
-        return slides.reduce((prevSlide, nextSlide) => prevSlide.props.currentIndex > nextSlide.props.currentIndex ? prevSlide : nextSlide)
-    }
-}
-
-/**
- * getActiveSlides returns slides which are or will be on-screen
- * @param {Array.<Object>} slides array of Slide instances
- * @param {Number} direction 1 or -1, where 1 means the slides are moving to the left and -1 means slides are moving to the right
- * @param {Number} numVisibleSlides integer indicating the number of slides to be displayed
- * @returns {Array.<Object>} array of Slide instances
- */
-const getActiveSlides = (slides, direction, numVisibleSlides) => {
-    let activeSlides
-    if (direction > 0) {
-        activeSlides = slides.filter(slide => slide.props.currentIndex <= numVisibleSlides)
-    } else {
-        activeSlides = slides.filter(slide => slide.props.currentIndex < numVisibleSlides)
-        const lastSlide = slides.reduce((prevSlide, nextSlide) => prevSlide.props.currentIndex > nextSlide.props.currentIndex ? prevSlide : nextSlide)
-        activeSlides.push(lastSlide)
-    }
-    return activeSlides
+const primaryAnimation = (container, slides, animationFn) => {
+    return animationFn(container, slides)
 }
 
 /**
@@ -106,14 +69,6 @@ const getActiveSlides = (slides, direction, numVisibleSlides) => {
  * @returns {Array.<Object>} array of Slide instances
  */
 const getOffscreenSlides = (slides, numVisibleSlides) => {
-    return slides.filter(slide => slide.props.currentIndex >= numVisibleSlides)
-}
-
-/**
- * getLastSlide returns the slide with the largest currentIndex
- * @param {Array.<Object>} slides array of Slide instances
- * @returns {Object} Slide instance
- */
-const getLastSlide = (slides) => {
-    return slides.reduce((prevSlide, nextSlide) => prevSlide.props.currentIndex > nextSlide.props.currentIndex ? prevSlide : nextSlide)
+    const offscreenSlides = slides.filter(slide => slide.props.currentIndex >= numVisibleSlides)
+    return offscreenSlides
 }

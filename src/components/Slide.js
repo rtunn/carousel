@@ -14,7 +14,8 @@ class Slide {
         currentIndex: 0,
         currentPosition: 0,
         nextIndex: null,
-        nextPosition: null
+        nextPosition: null,
+        domIndex: 0
     }) {
         this.props = props
     }

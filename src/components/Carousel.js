@@ -73,11 +73,12 @@ class Carousel {
      * startSlides sets an interval to call handleTransition with the Carousel's slideDelay
      */
     startSlides = () => {
+        const delay = this.props.slideDelay + this.props.duration
         this.state.slideInterval = setInterval(() => {
             if (!document.hidden) {
                 this.handleTransition(this.props.direction)
             }
-        }, this.props.slideDelay)
+        }, delay)
     }
 
     /**
@@ -90,7 +91,7 @@ class Carousel {
         const container = this.props.element.querySelector('.slide-container')
         const slides = this.state.slides
         const primaryFn = (container, slides) => {
-            executeAnimation(container, slides, this.props.duration)
+            return executeAnimation(container, slides, this.props.duration)
         }
         animationManager(container, slides, direction, this.props.numVisibleSlides, prepareAnimation, primaryFn)
         setTimeout(() => {
