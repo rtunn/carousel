@@ -25,22 +25,22 @@ class Carousel {
      */
     constructor(props) {
         this.slideInterval = null
-        this.props = props
         this.state = {}
         this.resting = true
+        Object.assign(this, props)
     }
 
     /**
      * componentDidMount renders Slide components and attaches them to Carousel element,
      * calls startSlides
      */
-    componentDidMount = () => {
-        const container = this.props.element.querySelector('.slide-container')
+    componentDidMount() {
+        const container = this.element.querySelector('.slide-container')
         const containerWidth = container.getBoundingClientRect().width
-        const slideWidth = containerWidth / this.props.numVisibleSlides
+        const slideWidth = containerWidth / this.numVisibleSlides
         this.state.slides = []
-        const maxIndex = this.props.slides.length - 1
-        this.props.slides.forEach((slideProps, i) => {
+        const maxIndex = this.slides.length - 1
+        this.slides.forEach((slideProps, i) => {
             const slide = new Slide({
                 ...slideProps,
                 width: slideWidth,
@@ -52,7 +52,7 @@ class Carousel {
             slide.render()
             this.state.slides.push(slide)
         })
-        const slideElements = this.state.slides.map(slide => slide.props.element)
+        const slideElements = this.state.slides.map(slide => slide.element)
 
         for (let slideEl of slideElements) {
             container.appendChild(slideEl)
@@ -64,7 +64,7 @@ class Carousel {
     /**
      * pauseSlides removes the interval set by startSlides
      */
-    pauseSlides = () => {
+    pauseSlides() {
         clearInterval(this.state.slideInterval)
         this.state.slideInterval = null
     }
@@ -72,11 +72,11 @@ class Carousel {
     /**
      * startSlides sets an interval to call handleTransition with the Carousel's slideDelay
      */
-    startSlides = () => {
-        const delay = this.props.slideDelay + this.props.duration
+    startSlides() {
+        const delay = this.slideDelay + this.duration
         this.state.slideInterval = setInterval(() => {
             if (!document.hidden) {
-                this.handleTransition(this.props.direction)
+                this.handleTransition(this.direction)
             }
         }, delay)
     }
@@ -85,18 +85,20 @@ class Carousel {
      * handleTransition calls the animationManager if the carousel is not in motion
      * @param {Number} direction 1 or -1, where 1 means the slides are moving to the left and -1 means slides are moving to the right
      */
-    handleTransition = (direction) => {
+    handleTransition(direction) {
         if (this.resting !== true) return
         this.resting = false
-        const container = this.props.element.querySelector('.slide-container')
         const slides = this.state.slides
-        const primaryFn = (container, slides) => {
-            return executeAnimation(container, slides, this.props.duration)
+        const prepFn = (offscreenSlides) => {
+            return prepareAnimation(slides, offscreenSlides, direction)
         }
-        animationManager(container, slides, direction, this.props.numVisibleSlides, prepareAnimation, primaryFn)
+        const primaryFn = (modifiedSlides) => {
+            return executeAnimation(modifiedSlides, this.duration)
+        }
+        animationManager(slides, direction, this.numVisibleSlides, prepFn, primaryFn)
         setTimeout(() => {
             this.resting = true
-        }, this.props.duration)
+        }, this.duration)
     }
 
     /**
@@ -136,10 +138,10 @@ class Carousel {
             this.update()
         }
 
-        if (this.props.element != null && this.props.element.parentNode != null) {
-            this.props.element.parentNode.replaceChild(el, this.props.element)
+        if (this.element != null && this.element.parentNode != null) {
+            this.element.parentNode.replaceChild(el, this.element)
         }
-        this.props.element = el
+        this.element = el
         this.componentDidMount()
     }
 

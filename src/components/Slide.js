@@ -17,7 +17,7 @@ class Slide {
         nextPosition: null,
         domIndex: 0
     }) {
-        this.props = props
+        Object.assign(this, props)
     }
 
     /**
@@ -27,10 +27,10 @@ class Slide {
     render() {
         const el = document.createElement('div')
         el.classList.add('slide')
-        el.style.width = `${this.props.width}px`
-        el.style.transform = `translateX(${this.props.currentPosition}px)`
-        el.innerHTML = this.props.content
-        this.props.element = el
+        el.style.width = `${this.width}px`
+        el.style.transform = `translateX(${this.currentPosition}px)`
+        el.innerHTML = this.content
+        this.element = el
         return el
     }
 
@@ -39,10 +39,10 @@ class Slide {
      * @param {Object} el HTMLElement
      */
     mount(el) {
-        if (this.props.element != null && this.props.element.parentNode != null) {
-            this.props.element.parentNode.replaceChild(el, this.props.element)
+        if (this.element != null && this.element.parentNode != null) {
+            this.element.parentNode.replaceChild(el, this.element)
         }
-        this.props.element = el
+        this.element = el
     }
 
     /**

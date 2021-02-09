@@ -1,17 +1,39 @@
 {
-    "presets": [
-        [
-            "@babel/preset-env",
-            {
-                "targets": {
-                    "ie": "11",
-                    "edge": "12",
-                    "firefox": "50",
-                    "chrome": "50",
-                    "safari": "9",
-                    "ios": "9"
-                }
-            }
-        ]
-    ]
+    "env": {
+        "test": {
+            "presets": [
+                [
+                    "@babel/preset-env",
+                    {
+                        "targets": {
+                            "ie": "11",
+                            "edge": "12",
+                            "firefox": "50",
+                            "chrome": "50",
+                            "safari": "9",
+                            "ios": "9"
+                        }
+                    }
+                ]
+            ]
+        },
+        "development": {
+            "presets": [
+                [
+                    "@babel/preset-env",
+                    {
+                        "targets": {
+                            "ie": "11",
+                            "edge": "12",
+                            "firefox": "50",
+                            "chrome": "50",
+                            "safari": "9",
+                            "ios": "9"
+                        }
+                    }
+                ]
+            ]
+        }
+    }
+    
 }

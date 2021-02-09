@@ -5,7 +5,7 @@
 export const slideLeft = slides => {
     const maxIndex = slides.length - 1
     for (let slide of slides) {
-        slide.props.nextIndex = slide.props.currentIndex - 1 >= 0 ? slide.props.currentIndex - 1 : maxIndex
+        slide.nextIndex = slide.currentIndex - 1 >= 0 ? slide.currentIndex - 1 : maxIndex
     }
 }
 
@@ -16,7 +16,7 @@ export const slideLeft = slides => {
 export const slideRight = slides => {
     const maxIndex = slides.length - 1
     for (let slide of slides) {
-        slide.props.nextIndex = slide.props.currentIndex < maxIndex ? slide.props.currentIndex + 1 : 0
+        slide.nextIndex = slide.currentIndex < maxIndex ? slide.currentIndex + 1 : 0
     }
 }
 
@@ -26,13 +26,13 @@ export const slideRight = slides => {
  * @param {Number} slideWidth Float width of slide's DOM element
  * @param {Number} direction 1 or -1, where 1 means the slides are moving to the left and -1 means slides are moving to the right
  */
-export const nextPosition = (slides, slideWidth, direction) => {
+export const nextPosition = (slides, direction) => {
     const maxIndex = slides.length - 1
     for (let slide of slides) {
         if (direction > 0) {
-            slide.props.nextPosition = slide.props.currentIndex === 0 ? slide.props.width * -1 : slide.props.nextIndex * slideWidth
+            slide.nextPosition = slide.currentIndex === 0 ? slide.width * -1 : slide.nextIndex * slide.width
         } else {
-            slide.props.nextPosition = slide.props.currentIndex === maxIndex ? 0 : slide.props.nextIndex * slideWidth
+            slide.nextPosition = slide.currentIndex === maxIndex ? 0 : slide.nextIndex * slide.width
                 }
     }
 }
@@ -43,10 +43,10 @@ export const nextPosition = (slides, slideWidth, direction) => {
  */
 export const cleanup = slides => {
     for (let slide of slides) {
-        slide.props.currentIndex = slide.props.nextIndex
-        slide.props.nextIndex = null
-        slide.props.currentPosition = slide.props.nextPosition
-        slide.props.nextPosition = null
+        slide.currentIndex = slide.nextIndex
+        slide.nextIndex = null
+        slide.currentPosition = slide.nextPosition
+        slide.nextPosition = null
     }
     return slides
 }

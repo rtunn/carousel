@@ -14,25 +14,17 @@ import {
  * @param {Function} prepFn function that performs preparatory animation
  * @param {Function} primaryFn function that performs primary animation
  */
-export const animationManager = (container, slides, direction, numVisibleSlides, prepFn, primaryFn) => {
-    const containerWidth = container.getBoundingClientRect().width
-    const slideWidth = containerWidth / numVisibleSlides
-
+export const animationManager = (slides, direction, numVisibleSlides, prepFn, primaryFn) => {
     if (direction > 0) {
         slideLeft(slides)
     } else {
         slideRight(slides)
     }
 
-    nextPosition(slides, slideWidth, direction)
-    const prepPromises = prepAnimation(container, slides, direction, numVisibleSlides, prepFn)
-    Promise.all(prepPromises)
-        .then(_ => {
-            const primaryCompleted = Promise.all(primaryAnimation(container, slides, primaryFn))
-            primaryCompleted.then(_ => {
-                cleanup(slides)
-            })
-        })
+    nextPosition(slides, direction)
+    Promise.all(prepAnimation(slides, numVisibleSlides, prepFn))
+        .then(_ => Promise.all(primaryFn(slides)))
+        .then(_ => cleanup(slides))
 }
 
 /**
@@ -44,9 +36,9 @@ export const animationManager = (container, slides, direction, numVisibleSlides,
  * @param {Function} animationFn function that performs the animation
  * @returns {Array.<Promise>} 
  */
-const prepAnimation = (container, slides, direction, numVisibleSlides, animationFn) => {
+const prepAnimation = (slides, numVisibleSlides, animationFn) => {
     const offscreenSlides = getOffscreenSlides(slides, numVisibleSlides)
-    return animationFn(container, offscreenSlides, direction, numVisibleSlides)
+    return animationFn(offscreenSlides)
 }
 
 /**
@@ -58,8 +50,8 @@ const prepAnimation = (container, slides, direction, numVisibleSlides, animation
  * @param {Function} animationFn function that performs the animation
  * @returns {Array.<Promise>}
  */
-const primaryAnimation = (container, slides, animationFn) => {
-    return animationFn(container, slides)
+const primaryAnimation = (slides, animationFn) => {
+    return animationFn(slides)
 }
 
 /**
@@ -69,6 +61,6 @@ const primaryAnimation = (container, slides, animationFn) => {
  * @returns {Array.<Object>} array of Slide instances
  */
 const getOffscreenSlides = (slides, numVisibleSlides) => {
-    const offscreenSlides = slides.filter(slide => slide.props.currentIndex >= numVisibleSlides)
+    const offscreenSlides = slides.filter(slide => slide.currentIndex >= numVisibleSlides)
     return offscreenSlides
 }
