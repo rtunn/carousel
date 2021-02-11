@@ -1,3 +1,5 @@
+import { replaceChildElement } from "../utility/replaceChildElement"
+
 /**
  * Class representing a slide in a carousel
  */
@@ -5,17 +7,20 @@ class Slide {
     /**
      * Creates a Slide
      * @param {Object} props configuration properties
+     * @param {HTMLElement} element props.element - defaults to null
      * @param {Number} currentIndex props.currentIndex - Integer indicating current index relative to carousel. 0 represents left side of carousel
      * @param {Number} currentPosition props.currentPosition - Float indicating the magnitude of the current translation
      * @param {Number} nextIndex props.nextIndex - Integer indicating next index relative to carousel. 0 represents left side of carousel
      * @param {Number} nextPosition props.nextPosition - Float indicating the magnitude of the target translation
      */
     constructor(props = {
+        element: null,
         currentIndex: 0,
         currentPosition: 0,
         nextIndex: null,
         nextPosition: null,
-        domIndex: 0
+        width: 100,
+        content: ''
     }) {
         Object.assign(this, props)
     }
@@ -30,7 +35,6 @@ class Slide {
         el.style.width = `${this.width}px`
         el.style.transform = `translateX(${this.currentPosition}px)`
         el.innerHTML = this.content
-        this.element = el
         return el
     }
 
@@ -39,10 +43,9 @@ class Slide {
      * @param {Object} el HTMLElement
      */
     mount(el) {
-        if (this.element != null && this.element.parentNode != null) {
-            this.element.parentNode.replaceChild(el, this.element)
-        }
+        const didReplace = replaceChildElement(el, this.element)
         this.element = el
+        return didReplace
     }
 
     /**

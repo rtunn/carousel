@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/utility/initCarousels.js</title>
+    <title>Code coverage report for src/animations/executeAnimation.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/utility</a> initCarousels.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/animations</a> executeAnimation.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
@@ -71,34 +71,58 @@
 <a name='L12'></a><a href='#L12'>12</a>
 <a name='L13'></a><a href='#L13'>13</a>
 <a name='L14'></a><a href='#L14'>14</a>
-<a name='L15'></a><a href='#L15'>15</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L15'></a><a href='#L15'>15</a>
+<a name='L16'></a><a href='#L16'>16</a>
+<a name='L17'></a><a href='#L17'>17</a>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { getCarouselProps } from './getCarouselProps'
-import Carousel from '../components/Carousel'
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { animateFrame } from './animateFrame'
+import { recurTilTrue } from '../utility/recurTilTrue'
 &nbsp;
 /**
- * initCarousels initializes, renders and mounts Carousel components
- * @param {Object} defaultProps default configuration properties
+ * executeAnimation moves on-screen slides into position
+ * @param {Object} container HTMLElement parent node of slides
+ * @param {Array.&lt;Object&gt;} slides array of Slide instances
+ * @param {Number} duration number of milliseconds to complete animation
+ * @returns {Array.&lt;Promise&gt;}
  */
-export const initCarousels = (defaultProps) =&gt; {
-    const carouselElements = document.querySelectorAll('.Carousel')
-    for (let el of carouselElements) {
-        const props = getCarouselProps(el, defaultProps)
-        const carousel = new Carousel(props)
-        carousel.update()
+export const executeAnimation = (slides, duration) =&gt; {
+    // milliseconds delay to reach 60 FPS
+    const msFps = 16.67
+    const numFrames = Math.ceil(duration / msFps)
+    const animationPromises = []
+&nbsp;
+    for (let slide of slides) {
+        const maxIncrement = slide.width / numFrames
+        const animationPromise = recurTilTrue(animateFrame(slide, maxIncrement), msFps)
+        animationPromises.push(animationPromise)
     }
+    return animationPromises
 }</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->

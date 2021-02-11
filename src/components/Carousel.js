@@ -1,12 +1,10 @@
 import Slide from './Slide'
 import slideControl from './SlideControl'
-import {
-    prepareAnimation,
-    executeAnimation
-} from '../animations'
-import {
-    animationManager
-} from '../animationManager'
+import { prepareAnimation } from '../animations/prepareAnimation'
+import { executeAnimation } from '../animations/executeAnimation'
+import { animationManager } from '../animationManager'
+import { replaceChildElement } from "../utility/replaceChildElement"
+
 
 /**
  * Class representing a carousel
@@ -23,12 +21,81 @@ class Carousel {
      * @param {Number} slideDelay props.slideDelay - number of milliseconds between slide animations when on autoplay
      * @param {Number} numVisibleSlides props.numVisibleSlides - Integer number of slides visible to client
      */
-    constructor(props) {
+    constructor({
+        element,
+        slides,
+        direction,
+        duration,
+        slideDelay,
+        numVisibleSlides
+    }) {
         this.slideInterval = null
         this.state = {}
         this.resting = true
-        Object.assign(this, props)
+        this.element = element
+        this.slides = slides
+        this.direction = direction
+        this.duration = duration
+        this.slideDelay = slideDelay
+        this.numVisibleSlides = numVisibleSlides
     }
+
+    set element(el) {
+        if (el instanceof HTMLElement === false) throw 'element must be instance of HTMLElement'
+        this._element = el
+    }
+
+    get element() {
+        return this._element
+    }
+
+    set slides(s) {
+        if (Array.isArray(s) === false) throw 'slides must be an array'
+        if (s.length < 1) throw 'must supply at least one slide'
+        this._slides = s
+    }
+
+    get slides() {
+        return this._slides
+    }
+
+    set direction(d) {
+        if ([-1, 1].includes(d) === false) throw 'direction must be 1 or -1'
+        this._direction = d
+    }
+
+    get direction() {
+        return this._direction
+    }
+
+    set duration(d) {
+        if (typeof d !== 'number') throw 'duration must be a number'
+        this._duration = d
+    }
+
+    get duration() {
+        return this._duration
+    }
+
+    set slideDelay(s) {
+        if (typeof s !== 'number') throw 'slideDelay must be a number'
+        this._slideDelay = s
+    }
+
+    get slideDelay() {
+        return this._slideDelay
+    }
+
+    set numVisibleSlides(n) {
+        if (typeof n !== 'number') throw 'numVisibleSlides must be a number'
+        this._numVisibleSlides = n
+    }
+
+    get numVisibleSlides() {
+        return this._numVisibleSlides
+    }
+
+
 
     /**
      * componentDidMount renders Slide components and attaches them to Carousel element,
@@ -49,7 +116,7 @@ class Carousel {
                 currentPosition: i < maxIndex ? i * slideWidth : -slideWidth,
                 maxIndex
             })
-            slide.render()
+            slide.update()
             this.state.slides.push(slide)
         })
         const slideElements = this.state.slides.map(slide => slide.element)
@@ -58,7 +125,18 @@ class Carousel {
             container.appendChild(slideEl)
         }
 
+        this.element.onmouseenter = this.pauseSlides
+        this.element.onmouseleave = this.startSlides
+        window.onresize = this.resizeHandler
         this.startSlides()
+    }
+
+    /**
+     * resizehandler pauses slides and updates the component
+     */
+    resizeHandler() {
+        this.pauseSlides()
+        this.update()
     }
 
     /**
@@ -75,30 +153,56 @@ class Carousel {
     startSlides() {
         const delay = this.slideDelay + this.duration
         this.state.slideInterval = setInterval(() => {
-            if (!document.hidden) {
+            if (document.hidden === false) {
                 this.handleTransition(this.direction)
             }
         }, delay)
     }
 
+    prevSlide() {
+        this.handleTransition(-1)
+    }
+
+    nextSlide() {
+        this.handleTransition(1)
+    }
+
     /**
      * handleTransition calls the animationManager if the carousel is not in motion
      * @param {Number} direction 1 or -1, where 1 means the slides are moving to the left and -1 means slides are moving to the right
+     * @param {Boolean} _ returns false if early return (carousel is not resting), else true
      */
     handleTransition(direction) {
-        if (this.resting !== true) return
+        if (this.resting !== true) return false
         this.resting = false
         const slides = this.state.slides
-        const prepFn = (offscreenSlides) => {
-            return prepareAnimation(slides, offscreenSlides, direction)
-        }
-        const primaryFn = (modifiedSlides) => {
-            return executeAnimation(modifiedSlides, this.duration)
-        }
-        animationManager(slides, direction, this.numVisibleSlides, prepFn, primaryFn)
+        animationManager(slides,
+            direction,
+            this.numVisibleSlides,
+            this.getPrepFn(direction),
+            this.getPrimaryFn()
+        )
         setTimeout(() => {
             this.resting = true
         }, this.duration)
+        return true
+    }
+
+    /**
+     * getPrepFn returns a function that is used as the prepFn callback arg in animationManager
+     * @param {Number} direction 1 or -1, where 1 means the slides are moving to the left and -1 means slides are moving to the right
+     * @returns {Function}
+     */
+    getPrepFn(direction) {
+        return (offscreenSlides) => prepareAnimation(this.container, offscreenSlides, direction)
+    }
+
+    /**
+     * getPrimaryFn returns a function that is used as the primaryFn callback arg in animationManager
+     * @returns {Function}
+     */
+    getPrimaryFn() {
+        return (modifiedSlides) => executeAnimation(modifiedSlides, this.duration)
     }
 
     /**
@@ -113,14 +217,14 @@ class Carousel {
         el.appendChild(
             slideControl({
                 btnType: 'prev',
-                onClick: () => this.handleTransition(-1)
+                onClick: this.prevSlide
             })
         )
         el.appendChild(container)
         el.appendChild(
             slideControl({
                 btnType: 'next',
-                onClick: () => this.handleTransition(1)
+                onClick: this.nextSlide
             })
         )
         return el
@@ -131,18 +235,12 @@ class Carousel {
      * @param {Object} el HTMLElement
      */
     mount(el) {
-        el.onmouseenter = this.pauseSlides
-        el.onmouseleave = this.startSlides
-        window.onresize = () => {
-            this.pauseSlides()
-            this.update()
-        }
-
-        if (this.element != null && this.element.parentNode != null) {
-            this.element.parentNode.replaceChild(el, this.element)
-        }
+        const didReplace = replaceChildElement(el, this.element)
         this.element = el
-        this.componentDidMount()
+        if (didReplace === true) {
+            this.componentDidMount()
+        }
+        return didReplace
     }
 
     /**

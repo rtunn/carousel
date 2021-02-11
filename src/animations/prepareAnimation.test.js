@@ -116,7 +116,7 @@ describe('prepareAnimation', () => {
     })
 
     describe('given direction === -1', () => {
-        const direction = 1
+        const direction = -1
         slides = [
             {
                 currentPosition: 300,

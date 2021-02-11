@@ -1,5 +1,5 @@
 import { animateFrame } from './animateFrame'
-import * as recur from '../utility/recurTilTrue'
+import { recurTilTrue } from '../utility/recurTilTrue'
 
 /**
  * executeAnimation moves on-screen slides into position
@@ -16,7 +16,7 @@ export const executeAnimation = (slides, duration) => {
 
     for (let slide of slides) {
         const maxIncrement = slide.width / numFrames
-        const animationPromise = recur.recurTilTrue(animateFrame(slide, maxIncrement), msFps)
+        const animationPromise = recurTilTrue(animateFrame(slide, maxIncrement), msFps)
         animationPromises.push(animationPromise)
     }
     return animationPromises

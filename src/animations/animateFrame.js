@@ -1,4 +1,4 @@
-import * as nextCoord from "./getNextCoord"
+import { getNextCoord } from './getNextCoord'
 
 /**
  * animateFrame moves slide incrementally until reaching desired position
@@ -10,7 +10,7 @@ export const animateFrame = (slide, maxIncrement) => {
     if (slide.currentPosition === slide.nextPosition) return true
 
     const limit = slide.nextPosition > slide.currentPosition ? maxIncrement : -1 * maxIncrement
-    slide.currentPosition = nextCoord.getNextCoord(slide.currentPosition, slide.nextPosition, limit)
+    slide.currentPosition = getNextCoord(slide.currentPosition, slide.nextPosition, limit)
     window.requestAnimationFrame(() => slide.element.style.transform = `translateX(${slide.currentPosition}px)`)
     return false
 }
