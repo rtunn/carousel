@@ -4,6 +4,7 @@ import { prepareAnimation } from '../animations/prepareAnimation'
 import { executeAnimation } from '../animations/executeAnimation'
 import { animationManager } from '../animationManager'
 import { replaceChildElement } from "../utility/replaceChildElement"
+import { getTallestElementHeight } from '../utility/getTallestElementHeight'
 
 
 /**
@@ -124,6 +125,9 @@ class Carousel {
         for (let slideEl of slideElements) {
             container.appendChild(slideEl)
         }
+
+        const tallestSlideHeight = getTallestElementHeight(slideElements, 0)
+        container.style.height = `${tallestSlideHeight}px`
 
         this.element.onmouseenter = this.pauseSlides
         this.element.onmouseleave = this.startSlides

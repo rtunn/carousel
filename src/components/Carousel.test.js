@@ -4,6 +4,7 @@ import Slide from './Slide'
 import * as animationManagerFn from '../animationManager'
 import * as prepareAnimationModule from '../animations/prepareAnimation'
 import * as executeAnimationModule from '../animations/executeAnimation'
+import * as eh from '../utility/getTallestElementHeight'
 
 const mockSlideElement = () => {
     const slideEl = document.createElement('div')
@@ -326,6 +327,7 @@ describe('Carousel', () => {
 
     describe('componentDidMount', () => {
         let carousel, pauseSlidesSpy, startSlidesSpy, updateSpy
+        const getTallestSpy = jest.spyOn(eh, 'getTallestElementHeight').mockImplementation(() => jest.fn()).mockReturnValue(300)
 
         beforeEach(() => {
             Element.prototype.getBoundingClientRect = jest.fn(() => {
@@ -359,6 +361,7 @@ describe('Carousel', () => {
             pauseSlidesSpy.mockClear()
             startSlidesSpy.mockClear()
             updateSpy.mockClear()
+            getTallestSpy.mockClear()
         })
 
         it('calls slide constructor for each slide', () => {
@@ -395,6 +398,22 @@ describe('Carousel', () => {
             carousel.componentDidMount()
             const container = carousel.element.querySelector('.slide-container')
             expect(container.querySelectorAll('.Slide').length).toBe(2)
+        })
+
+        it('calls getTallestElementHeight', () => {
+            carousel.componentDidMount()
+            expect(getTallestSpy).toHaveBeenCalledTimes(1)
+        })
+
+        it('calls getTallestElementHeight with array and number', () => {
+            carousel.componentDidMount()
+            expect(getTallestSpy).toHaveBeenCalledWith(expect.any(Array), expect.any(Number))
+        })
+
+        it('sets container height', () => {
+            carousel.componentDidMount()
+            const container = carousel.element.querySelector('.slide-container')
+            expect(container.style.height).toBe('300px')
         })
 
         it('adds event listeners to element', () => {

@@ -11,7 +11,7 @@ export const getOptionOrDefault = ({name, convertFn}, dataset={}, fallback={}) =
     const fallbackValue = fallback[name]
 
     if (datasetValue === undefined && fallbackValue === undefined) {
-        throw '[getOptionOrDefault] invalid name'
+        throw `[getOptionOrDefault] invalid name: ${name}`
     }
 
     try {

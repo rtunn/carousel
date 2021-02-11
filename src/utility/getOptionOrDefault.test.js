@@ -15,7 +15,7 @@ describe('getOptionOrDefault', () => {
                 convertFn: (val) => val
             }
             const omitted = () => getOptionOrDefault(propertyRequest)
-            expect(omitted).toThrowError(new Error('[getOptionOrDefault] invalid name'))
+            expect(omitted).toThrowError(new Error('[getOptionOrDefault] invalid name: foo'))
         })
     })
 
@@ -101,7 +101,7 @@ describe('getOptionOrDefault', () => {
                     convertFn: (val) => val
                 }
                 const invalidName = () => getOptionOrDefault(propertyRequest, dataset, fallback)
-                expect(invalidName).toThrowError(new Error('[getOptionOrDefault] invalid name'))
+                expect(invalidName).toThrowError(new Error('[getOptionOrDefault] invalid name: foo'))
             })
         })
     })
