@@ -16,7 +16,7 @@ export const executeAnimation = (slides, duration) => {
 
     for (let slide of slides) {
         const maxIncrement = slide.width / numFrames
-        const animationPromise = recurTilTrue(animateFrame(slide, maxIncrement), msFps)
+        const animationPromise = recurTilTrue(animateFrame, msFps, slide, maxIncrement)
         animationPromises.push(animationPromise)
     }
     return animationPromises

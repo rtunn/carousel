@@ -208,13 +208,11 @@ describe('Carousel', () => {
     })
 
     describe('render', () => {
-        let carousel, elem, prevSlideSpy, nextSlideSpy
+        let carousel, elem, handleTransitionSpy
 
         beforeEach(() => {
             carousel = new Carousel(fooProps)
-            prevSlideSpy = jest.spyOn(carousel, 'prevSlide').mockImplementation(() => jest.fn())
-            nextSlideSpy = jest.spyOn(carousel, 'nextSlide').mockImplementation(() => jest.fn())
-
+            handleTransitionSpy = jest.spyOn(carousel, 'handleTransition').mockImplementation(() => jest.fn())
             elem = carousel.render()
         })
 
@@ -241,11 +239,11 @@ describe('Carousel', () => {
         test('slideControl is called with correct arguments', () => {
             expect(slideControl).toHaveBeenNthCalledWith(1, expect.objectContaining({
                 btnType: 'prev',
-                onClick: prevSlideSpy
+                onClick: handleTransitionSpy
             }))
             expect(slideControl).toHaveBeenNthCalledWith(2, expect.objectContaining({
                 btnType: 'next',
-                onClick: nextSlideSpy
+                onClick: handleTransitionSpy
             }))
         })
     })
@@ -498,26 +496,6 @@ describe('Carousel', () => {
         })
     })
 
-    describe('prevSlide', () => {
-
-        it('calls handleTransition with arg -1', () => {
-            const carousel = new Carousel(fooProps)
-            const handleTransitionSpy = jest.spyOn(carousel, 'handleTransition').mockImplementation(() => jest.fn())
-            carousel.prevSlide()
-            expect(handleTransitionSpy).toHaveBeenCalledWith(-1)
-        })
-    })
-
-    describe('nextSlide', () => {
-
-        it('calls handleTransition with arg 1', () => {
-            const carousel = new Carousel(fooProps)
-            const handleTransitionSpy = jest.spyOn(carousel, 'handleTransition').mockImplementation(() => jest.fn())
-            carousel.nextSlide()
-            expect(handleTransitionSpy).toHaveBeenCalledWith(1)
-        })
-    })
-
     describe('handleTransition', () => {
         let carousel, animationManagerSpy, prepFnSpy, primaryFnSpy
 
@@ -586,11 +564,9 @@ describe('Carousel', () => {
             ]
             const prepFn = carousel.getPrepFn(1)
             prepFn([{ content: 'bar' }])
+            const container = carousel.element.querySelector('.slide-container')
             expect(prepareAnimationSpy).toHaveBeenCalledWith(
-                [
-                    { content: 'foo' },
-                    { content: 'bar' }
-                ],
+                container,
                 [{ content: 'bar' }],
                 1
             )

@@ -101,7 +101,7 @@ class Carousel {
      * componentDidMount renders Slide components and attaches them to Carousel element,
      * calls startSlides
      */
-    componentDidMount() {
+    componentDidMount = () => {
         const container = this.element.querySelector('.slide-container')
         const containerWidth = container.getBoundingClientRect().width
         const slideWidth = containerWidth / this.numVisibleSlides
@@ -134,7 +134,7 @@ class Carousel {
     /**
      * resizehandler pauses slides and updates the component
      */
-    resizeHandler() {
+    resizeHandler = () => {
         this.pauseSlides()
         this.update()
     }
@@ -142,7 +142,7 @@ class Carousel {
     /**
      * pauseSlides removes the interval set by startSlides
      */
-    pauseSlides() {
+    pauseSlides = () => {
         clearInterval(this.state.slideInterval)
         this.state.slideInterval = null
     }
@@ -150,7 +150,7 @@ class Carousel {
     /**
      * startSlides sets an interval to call handleTransition with the Carousel's slideDelay
      */
-    startSlides() {
+    startSlides = () => {
         const delay = this.slideDelay + this.duration
         this.state.slideInterval = setInterval(() => {
             if (document.hidden === false) {
@@ -159,20 +159,12 @@ class Carousel {
         }, delay)
     }
 
-    prevSlide() {
-        this.handleTransition(-1)
-    }
-
-    nextSlide() {
-        this.handleTransition(1)
-    }
-
     /**
      * handleTransition calls the animationManager if the carousel is not in motion
      * @param {Number} direction 1 or -1, where 1 means the slides are moving to the left and -1 means slides are moving to the right
      * @param {Boolean} _ returns false if early return (carousel is not resting), else true
      */
-    handleTransition(direction) {
+    handleTransition = (direction) => {
         if (this.resting !== true) return false
         this.resting = false
         const slides = this.state.slides
@@ -193,15 +185,16 @@ class Carousel {
      * @param {Number} direction 1 or -1, where 1 means the slides are moving to the left and -1 means slides are moving to the right
      * @returns {Function}
      */
-    getPrepFn(direction) {
-        return (offscreenSlides) => prepareAnimation(this.container, offscreenSlides, direction)
+    getPrepFn = (direction) => {
+        const container = this.element.querySelector('.slide-container')
+        return (offscreenSlides) => prepareAnimation(container, offscreenSlides, direction)
     }
 
     /**
      * getPrimaryFn returns a function that is used as the primaryFn callback arg in animationManager
      * @returns {Function}
      */
-    getPrimaryFn() {
+    getPrimaryFn = () => {
         return (modifiedSlides) => executeAnimation(modifiedSlides, this.duration)
     }
 
@@ -209,7 +202,7 @@ class Carousel {
      * render creates the carousel's HTMLElement
      * @returns {Object} HTMLElement
      */
-    render() {
+    render = () => {
         const el = document.createElement('div')
         el.classList.add('Carousel')
         const container = document.createElement('div')
@@ -217,14 +210,14 @@ class Carousel {
         el.appendChild(
             slideControl({
                 btnType: 'prev',
-                onClick: this.prevSlide
+                onClick: this.handleTransition
             })
         )
         el.appendChild(container)
         el.appendChild(
             slideControl({
                 btnType: 'next',
-                onClick: this.nextSlide
+                onClick: this.handleTransition
             })
         )
         return el
@@ -234,7 +227,7 @@ class Carousel {
      * mount replaces the existing element in the DOM with el, then calls componentDidMount
      * @param {Object} el HTMLElement
      */
-    mount(el) {
+    mount = (el) => {
         const didReplace = replaceChildElement(el, this.element)
         this.element = el
         if (didReplace === true) {
@@ -246,7 +239,7 @@ class Carousel {
     /**
      * update is a convenience function for mounting and rendering
      */
-    update() {
+    update = () => {
         this.mount(this.render())
     }
 }

@@ -6,12 +6,16 @@
  * @returns {Object} slideControl HTMLElement
  */
 const slideControl = props => {
+    let buttonIcon = '>'
+    let direction = 1
+    if (props.btnType === 'prev') {
+        buttonIcon = '<'
+        direction = -1
+    }
     const el = document.createElement('button')
     el.setAttribute('class', `SlideControl ${props.btnType}`)
-    el.onclick = props.onClick
-    el.innerHTML = `
-        ${props.btnType === 'prev' ? '<' : '>'}
-    `
+    el.onclick = () => props.onClick(direction)
+    el.innerHTML = buttonIcon
     return el
 }
 

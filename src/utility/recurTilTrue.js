@@ -5,11 +5,11 @@
  * @param {Function} booleanFn function that returns true or false
  * @param {Number} delay integer number of milliseconds for delay between intervals
  */
-export const recurTilTrue = (booleanFn, delay) => {
+export const recurTilTrue = (booleanFn, delay, ...fnArgs) => {
     return new Promise((resolve, reject) => {
         let interval = window.setInterval(() => {
             try {
-                if (booleanFn()) {
+                if (booleanFn(...fnArgs)) {
                     window.clearInterval(interval)
                     resolve()
                 }

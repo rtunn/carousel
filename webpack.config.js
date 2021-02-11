@@ -14,10 +14,10 @@ module.exports = {
             test: /\.js?$/,
             exclude: /node_modules/,
             loader: 'babel-loader',
-            query: {
-                plugins: ['@babel/plugin-proposal-class-properties'],
-                presets: ['@babel/preset-env'],
-            }
+            // query: {
+            //     plugins: ['@babel/plugin-proposal-class-properties'],
+            //     presets: ['@babel/preset-env'],
+            // }
         }]
     }
 }

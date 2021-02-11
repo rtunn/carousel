@@ -15,31 +15,43 @@ describe('animateFrame', () => {
         }
         getNextCoord.mockClear()
         jest.spyOn(window, 'requestAnimationFrame').mockImplementation(callback => callback())
-        jest.spyOn(nextCoord, 'getNextCoord').mockImplementation(() => getNextCoord())
+        jest.spyOn(nextCoord, 'getNextCoord').mockImplementation((...args) => getNextCoord(...args))
     })
 
-    test('returns false when currentPosition !== nextPosition', () => {
+    it('returns false when currentPosition !== nextPosition', () => {
         getNextCoord.mockReturnValue(90)
 
         expect(animateFrame(slide, maxIncrement)).toBe(false)
     })
 
-    test('returns true when currentPosition === nextPosition', () => {
+    it('returns true when currentPosition === nextPosition', () => {
         slide.currentPosition = slide.nextPosition
         expect(animateFrame(slide, maxIncrement)).toBe(true)
     })
 
-    test('sets currentPosition to coordFn return value', () => {
+    it('sets currentPosition to coordFn return value', () => {
         getNextCoord.mockReturnValue(90)
 
         animateFrame(slide, maxIncrement)
         expect(slide.currentPosition).toBe(90)
     })
 
-    test('sets element.style.transform to translate currentPosition', () => {
+    it('sets element.style.transform to translate currentPosition', () => {
         getNextCoord.mockReturnValue(90)
 
         animateFrame(slide, maxIncrement)
         expect(slide.element.style.transform).toBe("translateX(90px)")
+    })
+
+    it('calls getNextCoord with limit === maxIncrement when nextPosition > currentPosition', () => {
+        getNextCoord.mockReturnValue(90)
+
+        slide = {
+            currentPosition: 100,
+            nextPosition: 200,
+            element: document.createElement('div')
+        }
+        animateFrame(slide, maxIncrement)
+        expect(getNextCoord).toHaveBeenCalledWith(100, 200, maxIncrement)
     })
 })
