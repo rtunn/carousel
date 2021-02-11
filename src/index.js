@@ -1,5 +1,7 @@
 import { initCarousels } from './utility/initCarousels'
 
-document.addEventListener('DOMContentLoaded', () => {
+export const main = () => document.addEventListener('DOMContentLoaded', () => {
     initCarousels(window.carouselDefaultProps)
 })
+
+main()

@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/animations/prepareAnimation.js</title>
+    <title>Code coverage report for src/components/SlideControl.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/animations</a> prepareAnimation.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/components</a> SlideControl.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>21/21</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>16/16</span>
             </div>
         
             
@@ -88,69 +88,72 @@
 <a name='L29'></a><a href='#L29'>29</a>
 <a name='L30'></a><a href='#L30'>30</a>
 <a name='L31'></a><a href='#L31'>31</a>
-<a name='L32'></a><a href='#L32'>32</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">24x</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">24x</span>
-<span class="cline-any cline-yes">24x</span>
-<span class="cline-any cline-yes">24x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">24x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">24x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
- * prepareAnimation moves the slide into the position it's expected to be in to perform the primary animation
- * @param {Object} container HTMLElement parent node of slides
- * @param {Array.&lt;Object&gt;} slides array of Slide instances
- * @param {Number} direction 1 or -1, where 1 means the slides are moving to the left and -1 means slides are moving to the right
- * @returns {Array.&lt;Promise&gt;}
+ * slideControl returns a previous or next button
+ * @param {Object} props configuration properties
+ * @param {string} btnType props.btnType - CSS class
+ * @param {Function} onClick props.onClick - function called when onclick event is fired
+ * @returns {Object} slideControl HTMLElement
  */
-export const prepareAnimation = (container, slides, direction) =&gt; {
-    const promises = []
-    for (let slide of slides) {
-        let nextPosition
-        if (slide.nextPosition &lt; 0 || slide.nextPosition &gt; container.getBoundingClientRect().width) {
-            nextPosition = slide.nextPosition
-        } else {
-            nextPosition = direction &gt; 0 ? container.getBoundingClientRect().width : slide.width * -1
-        }
-        slide.element.style.opacity = 0
-        slide.element.style.transform = `translateX(${nextPosition}px)`
-        slide.currentPosition = nextPosition
+const slideControl = props =&gt; {
+    let buttonIcon
+    let direction
+    const validBtnTypes = ['prev', 'next']
 &nbsp;
-        const completedPrep = new Promise((resolve) =&gt; {
-            // use timeout to return flow control to browser,
-            // then reset opacity on separate UI update
-            window.setTimeout(() =&gt; {
-                slide.element.style.opacity = 1
-                resolve()
-            }, 1)
-        })
-        promises.push(completedPrep)
+    if ('btnType' in props === false) throw 'btnType is a required prop'
+    if ('onClick' in props === false) throw 'onClick is a required prop'
+    if (validBtnTypes.includes(props.btnType) === false) throw 'btnType must be "prev" or "next"'
+    if (typeof props.onClick !== "function") throw 'onClick must be a function'
+    
+    if (props.btnType === 'prev') {
+        buttonIcon = '&lt;'
+        direction = -1
+    } else {
+        buttonIcon = '&gt;'
+        direction = 1
     }
-    return promises
-}</pre></td></tr></table></pre>
+    
+    const el = document.createElement('button')
+    el.setAttribute('class', `SlideControl ${props.btnType}`)
+    el.onclick = () =&gt; props.onClick(direction)
+    el.innerHTML = buttonIcon
+    return el
+}
+&nbsp;
+export default slideControl</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

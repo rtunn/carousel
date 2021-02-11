@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1613065498457" clover="3.2.0">
-  <project timestamp="1613065498457" name="All files">
-    <metrics statements="211" coveredstatements="211" conditionals="63" coveredconditionals="63" methods="57" coveredmethods="57" elements="331" coveredelements="331" complexity="0" loc="211" ncloc="211" packages="4" files="15" classes="15"/>
+<coverage generated="1613068565586" clover="3.2.0">
+  <project timestamp="1613068565586" name="All files">
+    <metrics statements="230" coveredstatements="230" conditionals="73" coveredconditionals="73" methods="61" coveredmethods="61" elements="364" coveredelements="364" complexity="0" loc="230" ncloc="230" packages="4" files="17" classes="17"/>
     <package name="src">
-      <metrics statements="30" coveredstatements="30" conditionals="12" coveredconditionals="12" methods="7" coveredmethods="7"/>
+      <metrics statements="33" coveredstatements="33" conditionals="12" coveredconditionals="12" methods="9" coveredmethods="9"/>
       <file name="animationManager.js" path="/home/roger/Apps/js-workspace/carousel/src/animationManager.js">
         <metrics statements="9" coveredstatements="9" conditionals="2" coveredconditionals="2" methods="3" coveredmethods="3"/>
-        <line num="18" count="2" type="stmt"/>
+        <line num="18" count="3" type="stmt"/>
         <line num="19" count="6" type="cond" truecount="2" falsecount="0"/>
         <line num="20" count="5" type="stmt"/>
         <line num="22" count="1" type="stmt"/>
@@ -16,23 +16,29 @@
         <line num="29" count="6" type="stmt"/>
         <line num="30" count="6" type="stmt"/>
       </file>
+      <file name="index.js" path="/home/roger/Apps/js-workspace/carousel/src/index.js">
+        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+      </file>
       <file name="slide-functions.js" path="/home/roger/Apps/js-workspace/carousel/src/slide-functions.js">
         <metrics statements="21" coveredstatements="21" conditionals="10" coveredconditionals="10" methods="4" coveredmethods="4"/>
-        <line num="5" count="3" type="stmt"/>
+        <line num="5" count="4" type="stmt"/>
         <line num="6" count="2" type="stmt"/>
         <line num="7" count="2" type="stmt"/>
         <line num="8" count="6" type="cond" truecount="2" falsecount="0"/>
-        <line num="16" count="3" type="stmt"/>
+        <line num="16" count="4" type="stmt"/>
         <line num="17" count="2" type="stmt"/>
         <line num="18" count="2" type="stmt"/>
         <line num="19" count="6" type="cond" truecount="2" falsecount="0"/>
-        <line num="29" count="3" type="stmt"/>
+        <line num="29" count="4" type="stmt"/>
         <line num="30" count="4" type="stmt"/>
         <line num="31" count="4" type="stmt"/>
         <line num="32" count="12" type="cond" truecount="2" falsecount="0"/>
         <line num="33" count="6" type="cond" truecount="2" falsecount="0"/>
         <line num="35" count="6" type="cond" truecount="2" falsecount="0"/>
-        <line num="44" count="3" type="stmt"/>
+        <line num="44" count="4" type="stmt"/>
         <line num="45" count="1" type="stmt"/>
         <line num="46" count="3" type="stmt"/>
         <line num="47" count="3" type="stmt"/>
@@ -45,7 +51,7 @@
       <metrics statements="34" coveredstatements="34" conditionals="12" coveredconditionals="12" methods="7" coveredmethods="7"/>
       <file name="animateFrame.js" path="/home/roger/Apps/js-workspace/carousel/src/animations/animateFrame.js">
         <metrics statements="6" coveredstatements="6" conditionals="4" coveredconditionals="4" methods="2" coveredmethods="2"/>
-        <line num="9" count="3" type="stmt"/>
+        <line num="9" count="4" type="stmt"/>
         <line num="10" count="5" type="cond" truecount="2" falsecount="0"/>
         <line num="12" count="4" type="cond" truecount="2" falsecount="0"/>
         <line num="13" count="4" type="stmt"/>
@@ -54,7 +60,7 @@
       </file>
       <file name="executeAnimation.js" path="/home/roger/Apps/js-workspace/carousel/src/animations/executeAnimation.js">
         <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="11" count="2" type="stmt"/>
+        <line num="11" count="3" type="stmt"/>
         <line num="13" count="2" type="stmt"/>
         <line num="14" count="2" type="stmt"/>
         <line num="15" count="2" type="stmt"/>
@@ -66,14 +72,14 @@
       </file>
       <file name="getNextCoord.js" path="/home/roger/Apps/js-workspace/carousel/src/animations/getNextCoord.js">
         <metrics statements="4" coveredstatements="4" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-        <line num="9" count="4" type="stmt"/>
+        <line num="9" count="5" type="stmt"/>
         <line num="10" count="2" type="cond" truecount="2" falsecount="0"/>
         <line num="11" count="1" type="stmt"/>
         <line num="13" count="1" type="stmt"/>
       </file>
       <file name="prepareAnimation.js" path="/home/roger/Apps/js-workspace/carousel/src/animations/prepareAnimation.js">
         <metrics statements="15" coveredstatements="15" conditionals="6" coveredconditionals="6" methods="3" coveredmethods="3"/>
-        <line num="8" count="2" type="stmt"/>
+        <line num="8" count="3" type="stmt"/>
         <line num="9" count="9" type="stmt"/>
         <line num="10" count="9" type="stmt"/>
         <line num="12" count="24" type="cond" truecount="4" falsecount="0"/>
@@ -91,7 +97,7 @@
       </file>
     </package>
     <package name="src.components">
-      <metrics statements="97" coveredstatements="97" conditionals="23" coveredconditionals="23" methods="33" coveredmethods="33"/>
+      <metrics statements="113" coveredstatements="113" conditionals="33" coveredconditionals="33" methods="35" coveredmethods="35"/>
       <file name="Carousel.js" path="/home/roger/Apps/js-workspace/carousel/src/components/Carousel.js">
         <metrics statements="86" coveredstatements="86" conditionals="22" coveredconditionals="22" methods="29" coveredmethods="29"/>
         <line num="32" count="55" type="stmt"/>
@@ -195,12 +201,31 @@
         <line num="48" count="4" type="stmt"/>
         <line num="55" count="1" type="stmt"/>
       </file>
+      <file name="SlideControl.js" path="/home/roger/Apps/js-workspace/carousel/src/components/SlideControl.js">
+        <metrics statements="16" coveredstatements="16" conditionals="10" coveredconditionals="10" methods="2" coveredmethods="2"/>
+        <line num="8" count="2" type="stmt"/>
+        <line num="11" count="11" type="stmt"/>
+        <line num="13" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="14" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="15" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="18" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="4" type="stmt"/>
+        <line num="20" count="4" type="stmt"/>
+        <line num="22" count="3" type="stmt"/>
+        <line num="23" count="3" type="stmt"/>
+        <line num="26" count="7" type="stmt"/>
+        <line num="27" count="7" type="stmt"/>
+        <line num="28" count="7" type="stmt"/>
+        <line num="29" count="7" type="stmt"/>
+        <line num="30" count="7" type="stmt"/>
+      </file>
     </package>
     <package name="src.utility">
       <metrics statements="50" coveredstatements="50" conditionals="16" coveredconditionals="16" methods="10" coveredmethods="10"/>
       <file name="getCarouselProps.js" path="/home/roger/Apps/js-workspace/carousel/src/utility/getCarouselProps.js">
         <metrics statements="11" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="10" count="2" type="stmt"/>
+        <line num="10" count="3" type="stmt"/>
         <line num="11" count="5" type="stmt"/>
         <line num="14" count="5" type="stmt"/>
         <line num="15" count="5" type="stmt"/>
@@ -214,13 +239,13 @@
       </file>
       <file name="getOffscreenSlides.js" path="/home/roger/Apps/js-workspace/carousel/src/utility/getOffscreenSlides.js">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
-        <line num="7" count="3" type="stmt"/>
+        <line num="7" count="4" type="stmt"/>
         <line num="8" count="4" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
       </file>
       <file name="getOptionOrDefault.js" path="/home/roger/Apps/js-workspace/carousel/src/utility/getOptionOrDefault.js">
         <metrics statements="11" coveredstatements="11" conditionals="6" coveredconditionals="6" methods="1" coveredmethods="1"/>
-        <line num="8" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="8" count="4" type="cond" truecount="2" falsecount="0"/>
         <line num="10" count="26" type="stmt"/>
         <line num="11" count="26" type="stmt"/>
         <line num="13" count="26" type="cond" truecount="4" falsecount="0"/>
@@ -234,7 +259,7 @@
       </file>
       <file name="initCarousels.js" path="/home/roger/Apps/js-workspace/carousel/src/utility/initCarousels.js">
         <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="8" count="1" type="stmt"/>
+        <line num="8" count="2" type="stmt"/>
         <line num="9" count="2" type="stmt"/>
         <line num="10" count="2" type="stmt"/>
         <line num="11" count="3" type="stmt"/>
@@ -243,7 +268,7 @@
       </file>
       <file name="recurTilTrue.js" path="/home/roger/Apps/js-workspace/carousel/src/utility/recurTilTrue.js">
         <metrics statements="8" coveredstatements="8" conditionals="2" coveredconditionals="2" methods="3" coveredmethods="3"/>
-        <line num="8" count="3" type="stmt"/>
+        <line num="8" count="4" type="stmt"/>
         <line num="9" count="2" type="stmt"/>
         <line num="10" count="2" type="stmt"/>
         <line num="11" count="3" type="stmt"/>
@@ -254,7 +279,7 @@
       </file>
       <file name="replaceChildElement.js" path="/home/roger/Apps/js-workspace/carousel/src/utility/replaceChildElement.js">
         <metrics statements="6" coveredstatements="6" conditionals="6" coveredconditionals="6" methods="1" coveredmethods="1"/>
-        <line num="6" count="3" type="stmt"/>
+        <line num="6" count="4" type="stmt"/>
         <line num="7" count="15" type="cond" truecount="2" falsecount="0"/>
         <line num="8" count="12" type="cond" truecount="2" falsecount="0"/>
         <line num="9" count="9" type="cond" truecount="2" falsecount="0"/>
@@ -263,7 +288,7 @@
       </file>
       <file name="toInt.js" path="/home/roger/Apps/js-workspace/carousel/src/utility/toInt.js">
         <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-        <line num="6" count="3" type="stmt"/>
+        <line num="6" count="4" type="stmt"/>
         <line num="7" count="44" type="cond" truecount="2" falsecount="0"/>
         <line num="8" count="18" type="stmt"/>
         <line num="10" count="26" type="stmt"/>
