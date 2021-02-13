@@ -1,5 +1,6 @@
 import { getOptionOrDefault } from './getOptionOrDefault'
 import { toInt } from './toInt'
+import { strToArrayInt } from './strToArrayInt'
 
 /**
  * getCarouselProps retrieves configuration properties
@@ -8,17 +9,18 @@ import { toInt } from './toInt'
  * @returns {Object} props to be used as Carousel constructor arg
  */
 export const getCarouselProps = (el, defaultProps) => {
-    const propertyRequest = {
-        convertFn: toInt
-    }
+    const intRequest = { convertFn: toInt }
+    const arrayRequest = { convertFn: strToArrayInt }
     const dataset = el.dataset
     const fallback = defaultProps
     const props = {
         element: el,
         slides: [],
-        direction: getOptionOrDefault({ ...propertyRequest, name: 'slideDirection' }, dataset, fallback),
-        duration: getOptionOrDefault({ ...propertyRequest, name: 'slideDuration' }, dataset, fallback),
-        slideDelay: getOptionOrDefault({ ...propertyRequest, name: 'slideDelay' }, dataset, fallback),
+        direction: getOptionOrDefault({ ...intRequest, name: 'slideDirection' }, dataset, fallback),
+        duration: getOptionOrDefault({ ...intRequest, name: 'slideDuration' }, dataset, fallback),
+        slideDelay: getOptionOrDefault({ ...intRequest, name: 'slideDelay' }, dataset, fallback),
+        breakPoints: getOptionOrDefault({ ...arrayRequest, name: 'breakPoints' }, dataset, fallback),
+        breakPointNumVisibleSlides: getOptionOrDefault({ ...arrayRequest, name: 'breakPointNumSlides' }, dataset, fallback)
     }
 
     const slideElements = el.querySelectorAll('.slide')
@@ -31,7 +33,7 @@ export const getCarouselProps = (el, defaultProps) => {
 
     props.numVisibleSlides = Math.min(
         props.slides.length - 1,
-        getOptionOrDefault({ ...propertyRequest, name: 'numVisible' }, dataset, fallback)
+        getOptionOrDefault({ ...intRequest, name: 'numVisible' }, dataset, fallback)
     )
 
     return props

@@ -19,7 +19,8 @@ export const getOptionOrDefault = ({name, convertFn}, dataset={}, fallback={}) =
     } catch(_) {
         try {
             value = convertFn(fallbackValue)
-        } catch(_) {
+        } catch(err) {
+            console.error(err)
             throw '[getOptionOrDefault] property cannot be converted'
         }
     }

@@ -11,9 +11,9 @@
 
 <body>
     <div class="Carousel" data-slide-direction="1" data-slide-duration="2000" data-slide-delay="4000"
-        data-num-visible="3">
+        data-num-visible="1" data-break-points="800, 1200" data-break-point-num-slides="2,4">
         <div class="slide">
-            <h3>0</h3>
+            <h3 style="height: 500px">0</h3>
         </div>
         <div class="slide">
             <h3>1</h3>
@@ -29,11 +29,13 @@
         </div> -->
     </div>
     <script>
-        const carouselDefaultProps = {
+        window.carouselDefaultProps = {
             slideDirection: 1,
             slideDuration: 2000,
             slideDelay: 5000,
-            numVisible: 3
+            numVisible: 1,
+            breakPoints: "700,1500",
+            breakPointNumSlides: "2,3"
         }
     </script>
 </body>

@@ -1,9 +1,11 @@
 import { initCarousels } from './initCarousels'
 import Carousel from '../components/Carousel'
+import * as gc from './getCarouselProps'
+
 const mockCarouselUpdate = jest.fn()
 jest.mock('../components/Carousel', () => {
     return jest.fn().mockImplementation(() => {
-        return {update: mockCarouselUpdate}
+        return { update: mockCarouselUpdate }
     })
 })
 
@@ -15,10 +17,14 @@ const defaultProps = {
 }
 
 describe('initCarousels', () => {
+    const getCarouselPropsMock = jest.spyOn(gc, 'getCarouselProps').mockImplementation(() => jest.fn()).mockReturnValue('foo')
+
     beforeEach(() => {
         Carousel.mockClear()
         mockCarouselUpdate.mockClear()
+        getCarouselPropsMock.mockClear()
     })
+    
     test('constructs Carousel and returns in an array', () => {
         document.body.innerHTML = `
             <div class="Carousel">
@@ -55,7 +61,7 @@ describe('initCarousels', () => {
 
         // check mockClear is working
         expect(Carousel).toHaveBeenCalledTimes(0)
-        
+
         const carousels = initCarousels(defaultProps)
         expect(Carousel).toHaveBeenCalledTimes(2)
         expect(mockCarouselUpdate).toHaveBeenCalledTimes(2)

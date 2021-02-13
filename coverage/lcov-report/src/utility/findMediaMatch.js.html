@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/utility/replaceChildElement.js</title>
+    <title>Code coverage report for src/utility/findMediaMatch.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/utility</a> replaceChildElement.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/utility</a> findMediaMatch.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
@@ -68,28 +68,40 @@
 <a name='L9'></a><a href='#L9'>9</a>
 <a name='L10'></a><a href='#L10'>10</a>
 <a name='L11'></a><a href='#L11'>11</a>
-<a name='L12'></a><a href='#L12'>12</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L12'></a><a href='#L12'>12</a>
+<a name='L13'></a><a href='#L13'>13</a>
+<a name='L14'></a><a href='#L14'>14</a>
+<a name='L15'></a><a href='#L15'>15</a>
+<a name='L16'></a><a href='#L16'>16</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
- * replaceChildElement replaces child element with new element
- * @param newElement HTMLElement
- * @param existingElement HTMLElement - element must be attached to a parentNode
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { constructMediaQuery } from './constructMediaQuery'
+&nbsp;
+/**
+ * findMediaMatch find object whose property matches query against the current window
+ * @param {Array.&lt;Object&gt;} mediaObjs array of mediaObj
+ * @param {string} query 'min-width' or 'max-width'
+ * @param {string} property key in mediaObj whose value will be compared
+ * @param {string} unit unit to apply to comparison value
  */
-export const replaceChildElement = (newElement, existingElement) =&gt; {
-    if (newElement instanceof HTMLElement === false) throw 'el must be instance of HTMLElement'
-    if (existingElement instanceof HTMLElement === false) return false
-    if (existingElement.parentNode === null) return false
-    existingElement.parentNode.replaceChild(newElement, existingElement)
-    return true
+export const findMediaMatch = (mediaObjs, { query, property, unit }) =&gt; {
+    for (let mediaObj of mediaObjs) {
+        const mediaQueryString = constructMediaQuery({ query, comparisonValue: mediaObj[property], unit })
+        const mediaQueryList = window.matchMedia(mediaQueryString)
+        if (mediaQueryList.matches) return mediaObj
+    }
 }</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->

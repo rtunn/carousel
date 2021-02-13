@@ -5,6 +5,7 @@ import { executeAnimation } from '../animations/executeAnimation'
 import { animationManager } from '../animationManager'
 import { replaceChildElement } from "../utility/replaceChildElement"
 import { getTallestElementHeight } from '../utility/getTallestElementHeight'
+import { findByMediaSize } from '../utility/findByMediaSize'
 
 
 /**
@@ -28,17 +29,22 @@ class Carousel {
         direction,
         duration,
         slideDelay,
-        numVisibleSlides
+        numVisibleSlides,
+        breakPoints,
+        breakPointNumVisibleSlides
     }) {
         this.slideInterval = null
         this.state = {}
         this.resting = true
+        this.shouldResize = false
         this.element = element
         this.slides = slides
         this.direction = direction
         this.duration = duration
         this.slideDelay = slideDelay
-        this.numVisibleSlides = numVisibleSlides
+        this.defaultNumVisibleSlides = numVisibleSlides
+        this.breakPointObjs = [breakPoints, breakPointNumVisibleSlides]
+        // this.numVisibleSlides = numVisibleSlides
     }
 
     set element(el) {
@@ -87,16 +93,43 @@ class Carousel {
         return this._slideDelay
     }
 
+    set defaultNumVisibleSlides(n) {
+        if (typeof n !== 'number') throw 'defaultNumVisibleSlides must be a number'
+        this._defaultNumVisibleSlides = n
+    }
+
+    get defaultNumVisibleSlides() {
+        return this._defaultNumVisibleSlides
+    }
+
     set numVisibleSlides(n) {
-        if (typeof n !== 'number') throw 'numVisibleSlides must be a number'
-        this._numVisibleSlides = n
+        throw 'numVisibleSlides is a read-only property'
     }
 
     get numVisibleSlides() {
-        return this._numVisibleSlides
+        const ns = findByMediaSize(this.breakPointObjs, 'min-width', this.defaultNumVisibleSlides)
+        if (ns >= this.slides.length) return this.slides.length - 1
+        return ns
     }
 
+    set breakPointObjs(arr) {
+        if (Array.isArray(arr) === false) throw 'breakPointObjs must be an array'
+        if (Array.isArray(arr[0]) === false) throw 'breakPointObjs[0] must be an array'
+        if (Array.isArray(arr[1]) === false) throw 'breakPointObjs[1] must be an array'
+        if (arr[0].length !== arr[1].length) throw 'breakPointObjs[0] and breakPointObjs[1] must have same number of elements'
+        const bpObjs = []
+        for (let i = 0; i < arr[0].length; i++) {
+            bpObjs.push({
+                breakPoint: arr[0][i],
+                item: arr[1][i]
+            })
+        }
+        this._breakPointObjs = bpObjs
+    }
 
+    get breakPointObjs() {
+        return this._breakPointObjs
+    }
 
     /**
      * componentDidMount renders Slide components and attaches them to Carousel element,
@@ -131,16 +164,28 @@ class Carousel {
 
         this.element.onmouseenter = this.pauseSlides
         this.element.onmouseleave = this.startSlides
-        window.onresize = this.resizeHandler
+        window.addEventListener('resize', this.resizeHandler)
         this.startSlides()
     }
 
     /**
-     * resizehandler pauses slides and updates the component
+     * resizehandler sets shouldResize to true and sets a timeout to call resize method
      */
     resizeHandler = () => {
+        this.shouldResize = true
+        setTimeout(this.resize, 1000)
+    }
+
+    /**
+     * resize pauses slides and updates the component if shouldResize is true
+     * sets shouldResize to false
+     */
+    resize = () => {
+        if (this.shouldResize === false) return
+        console.log('resizing')
         this.pauseSlides()
         this.update()
+        this.shouldResize = false
     }
 
     /**

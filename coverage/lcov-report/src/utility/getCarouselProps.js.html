@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>12/12</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
@@ -94,7 +94,10 @@
 <a name='L35'></a><a href='#L35'>35</a>
 <a name='L36'></a><a href='#L36'>36</a>
 <a name='L37'></a><a href='#L37'>37</a>
-<a name='L38'></a><a href='#L38'>38</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -104,35 +107,37 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">20x</span>
-<span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { getOptionOrDefault } from './getOptionOrDefault'
 import { toInt } from './toInt'
+import { strToArrayInt } from './strToArrayInt'
 &nbsp;
 /**
  * getCarouselProps retrieves configuration properties
@@ -141,17 +146,18 @@ import { toInt } from './toInt'
  * @returns {Object} props to be used as Carousel constructor arg
  */
 export const getCarouselProps = (el, defaultProps) =&gt; {
-    const propertyRequest = {
-        convertFn: toInt
-    }
+    const intRequest = { convertFn: toInt }
+    const arrayRequest = { convertFn: strToArrayInt }
     const dataset = el.dataset
     const fallback = defaultProps
     const props = {
         element: el,
         slides: [],
-        direction: getOptionOrDefault({ ...propertyRequest, name: 'slideDirection' }, dataset, fallback),
-        duration: getOptionOrDefault({ ...propertyRequest, name: 'slideDuration' }, dataset, fallback),
-        slideDelay: getOptionOrDefault({ ...propertyRequest, name: 'slideDelay' }, dataset, fallback),
+        direction: getOptionOrDefault({ ...intRequest, name: 'slideDirection' }, dataset, fallback),
+        duration: getOptionOrDefault({ ...intRequest, name: 'slideDuration' }, dataset, fallback),
+        slideDelay: getOptionOrDefault({ ...intRequest, name: 'slideDelay' }, dataset, fallback),
+        breakPoints: getOptionOrDefault({ ...arrayRequest, name: 'breakPoints' }, dataset, fallback),
+        breakPointNumVisibleSlides: getOptionOrDefault({ ...arrayRequest, name: 'breakPointNumSlides' }, dataset, fallback)
     }
 &nbsp;
     const slideElements = el.querySelectorAll('.slide')
@@ -164,7 +170,7 @@ export const getCarouselProps = (el, defaultProps) =&gt; {
 &nbsp;
     props.numVisibleSlides = Math.min(
         props.slides.length - 1,
-        getOptionOrDefault({ ...propertyRequest, name: 'numVisible' }, dataset, fallback)
+        getOptionOrDefault({ ...intRequest, name: 'numVisible' }, dataset, fallback)
     )
 &nbsp;
     return props
@@ -175,7 +181,7 @@ export const getCarouselProps = (el, defaultProps) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Feb 11 2021 17:44:51 GMT-0500 (Eastern Standard Time)
+                at Fri Feb 12 2021 19:35:56 GMT-0500 (Eastern Standard Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

@@ -5,6 +5,7 @@ import * as animationManagerFn from '../animationManager'
 import * as prepareAnimationModule from '../animations/prepareAnimation'
 import * as executeAnimationModule from '../animations/executeAnimation'
 import * as eh from '../utility/getTallestElementHeight'
+import * as fm from '../utility/findByMediaSize'
 
 const mockSlideElement = () => {
     const slideEl = document.createElement('div')
@@ -35,13 +36,18 @@ describe('Carousel', () => {
         direction: 1,
         duration: 1000,
         slideDelay: 3000,
-        numVisibleSlides: 1
+        numVisibleSlides: 1,
+        breakPoints: [700, 1500],
+        breakPointNumVisibleSlides: [2, 3]
     }
+
+    let findByMediaSizeMock = jest.spyOn(fm, 'findByMediaSize').mockImplementation(() => jest.fn()).mockReturnValue(1)
 
     beforeEach(() => {
         slideControl.mockClear()
         Slide.mockClear()
         mockSlideUpdate.mockClear()
+        findByMediaSizeMock.mockClear()
     })
 
     describe('constructor', () => {
@@ -61,7 +67,7 @@ describe('Carousel', () => {
             expect(carousel.direction).toBe(1)
             expect(carousel.duration).toBe(1000)
             expect(carousel.slideDelay).toBe(3000)
-            expect(carousel.numVisibleSlides).toBe(1)
+            expect(carousel.defaultNumVisibleSlides).toBe(1)
         })
 
         test('initialization properties are set', () => {
@@ -187,23 +193,114 @@ describe('Carousel', () => {
             })
         })
 
-        describe('set numVisibleSlides', () => {
+        describe('set defaultNumVisibleSlides', () => {
 
             test('throws if argument is not a number', () => {
-                expect(() => carousel.numVisibleSlides = 'bar').toThrow()
+                expect(() => carousel.defaultNumVisibleSlides = 'bar').toThrow()
             })
 
-            test('sets numVisibleSlides given valid argument', () => {
-                carousel.numVisibleSlides = 7
-                expect(carousel._numVisibleSlides).toBe(7)
+            test('sets defaultNumVisibleSlides given valid argument', () => {
+                carousel.defaultNumVisibleSlides = 7
+                expect(carousel._defaultNumVisibleSlides).toBe(7)
             })
         })
 
-        describe('get numVisibleSlides', () => {
+        describe('get defaultNumVisibleSlides', () => {
 
-            test('returns _numVisibleSlides', () => {
-                carousel._numVisibleSlides = 4
+            it('returns _defaultNumVisibleSlides', () => {
+                carousel._defaultNumVisibleSlides = 3
+                expect(carousel.defaultNumVisibleSlides).toBe(3)
+            })
+        })
+
+        describe('set numVisibleSlides', () => {
+            
+            it('throws (read-only)', () => {
+                expect(() => carousel.numVisibleSlides = 3).toThrow()
+            })
+        })
+        
+
+        describe('get numVisibleSlides', () => {
+            const localMock = jest.spyOn(fm, 'findByMediaSize').mockImplementation(() => jest.fn()).mockReturnValue(4)
+
+            beforeEach(() => {
+                localMock.mockClear()
+            })
+
+            test('returns result of findByMediaSize', () => {
+                const tmp = [...carousel.slides]
+                carousel.slides = [1, 2, 3, 4, 5, 6, 7]
                 expect(carousel.numVisibleSlides).toBe(4)
+                carousel.slides = tmp
+            })
+
+            test('calls findByMediaSize with correct arguments', () => {
+                const _ = carousel.numVisibleSlides
+                expect(localMock).toHaveBeenCalledWith(carousel.breakPointObjs, 'min-width', carousel.defaultNumVisibleSlides)
+            })
+
+            test('returns slides.length - 1 if breakPointNumSlides is higher than available slides', () => {
+                const tmp = [...carousel.slides]
+                carousel.slides = ['foo', 'bar']
+                expect(carousel.numVisibleSlides).toBe(1)
+                carousel.slides = tmp
+            })
+        })
+
+        describe('set breakPointObjs', () => {
+
+            it('throws if arg is not array', () => {
+                expect(() => carousel.breakPointObjs = {}).toThrow()
+            })
+
+            it('throws if arg[0] is not array', () => {
+                expect(() => carousel.breakPointObjs = [{}]).toThrow()
+            })
+
+            it('throws if arg[1] is not array', () => {
+                expect(() => carousel.breakPointObjs = [[], {}]).toThrow()
+            })
+
+            it('throws if arg[0] and arg[1] have different lengths', () => {
+                expect(() => carousel.breakPointObjs = [[5], [0, 1]]).toThrow()
+            })
+
+            it('sets _breakPointObjs to an array of objects with keys breakPoint and item', () => {
+                const input = [
+                    [700, 1400],
+                    [0, 1]
+                ]
+                const expected = [
+                    {
+                        breakPoint: 700,
+                        item: 0
+                    },
+                    {
+                        breakPoint: 1400,
+                        item: 1
+                    }
+                ]
+                carousel.breakPointObjs = input
+                expect(carousel._breakPointObjs).toStrictEqual(expected)
+            })
+        })
+
+        describe('get BreakPointObjs', () => {
+
+            it('returns _breakPointObjs', () => {
+                const expected = [
+                    {
+                        breakPoint: 700,
+                        item: 0
+                    },
+                    {
+                        breakPoint: 1400,
+                        item: 1
+                    }
+                ]
+                carousel._breakPointObjs = expected
+                expect(carousel.breakPointObjs).toStrictEqual(expected)
             })
         })
     })
@@ -370,6 +467,7 @@ describe('Carousel', () => {
         })
 
         it('calls slide constructor with correct argument', () => {
+            const numSlidesMock = jest.spyOn(fm, 'findByMediaSize').mockImplementation(() => jest.fn()).mockReturnValue(1)
             carousel.componentDidMount()
             expect(Slide).toHaveBeenNthCalledWith(1, expect.objectContaining({
                 content: '<h3>0</h3>',
@@ -426,9 +524,11 @@ describe('Carousel', () => {
 
         it('adds window resize event listener', () => {
             const resizeHandlerSpy = jest.spyOn(carousel, 'resizeHandler').mockImplementation(() => jest.fn())
+            const addEventListenerSpy = jest.spyOn(window, 'addEventListener')
             window.onresize = null
             carousel.componentDidMount()
-            expect(window.onresize).toBe(resizeHandlerSpy)
+            expect(addEventListenerSpy).toHaveBeenCalledWith('resize', resizeHandlerSpy)
+            expect(resizeHandlerSpy).not.toHaveBeenCalled()
         })
 
         it('calls startSlides', () => {
@@ -440,14 +540,46 @@ describe('Carousel', () => {
 
     describe('resizeHandler', () => {
 
-        it('calls pauseSlides and update', () => {
+        it('sets shouldResize to true', () => {
+            const carousel = new Carousel(fooProps)
+            const timeoutSpy = jest.spyOn(window, 'setTimeout').mockImplementation(() => jest.fn())
+            expect(carousel.shouldResize).toBe(false)
+            carousel.resizeHandler()
+            expect(carousel.shouldResize).toBe(true)
+        })
+
+        it('sets timeout to execute resize queue', () => {
+            const carousel = new Carousel(fooProps)
+            const resizeSpy = jest.spyOn(carousel, 'resize')
+            const timeoutSpy = jest.spyOn(window, 'setTimeout').mockImplementation(() => jest.fn())
+            carousel.resizeHandler()
+            expect(timeoutSpy).toHaveBeenCalledWith(resizeSpy, 1000)
+        })
+    })
+
+    describe('resize', () => {
+
+        it('calls pauseSlides and update if shouldResize is true and sets shouldResize to false', () => {
             const carousel = new Carousel(fooProps)
             const pauseSlidesSpy = jest.spyOn(carousel, 'pauseSlides').mockImplementation(() => jest.fn())
             const updateSpy = jest.spyOn(carousel, 'update').mockImplementation(() => jest.fn())
-
-            carousel.resizeHandler()
+            carousel.shouldResize = true
+            carousel.resize()
             expect(pauseSlidesSpy).toHaveBeenCalledTimes(1)
             expect(updateSpy).toHaveBeenCalledTimes(1)
+            expect(carousel.shouldResize).toBe(false)
+        })
+
+        it('does not call pauseSlides or update if shouldResize is false', () => {
+
+            const carousel = new Carousel(fooProps)
+            const pauseSlidesSpy = jest.spyOn(carousel, 'pauseSlides').mockImplementation(() => jest.fn())
+            const updateSpy = jest.spyOn(carousel, 'update').mockImplementation(() => jest.fn())
+            carousel.shouldResize = false
+            carousel.resize()
+            expect(pauseSlidesSpy).not.toHaveBeenCalled()
+            expect(updateSpy).not.toHaveBeenCalled()
+            expect(carousel.shouldResize).toBe(false)
         })
     })
 
@@ -526,6 +658,7 @@ describe('Carousel', () => {
             animationManagerSpy.mockClear()
             prepFnSpy.mockClear()
             primaryFnSpy.mockClear()
+            findByMediaSizeMock.mockClear()
         })
 
         describe('given carousel is not resting', () => {
@@ -548,7 +681,9 @@ describe('Carousel', () => {
                 { content: 'foo' },
                 { content: 'bar' }
             ]
-            carousel.numVisibleSlides = 2
+            const tmp = [...carousel.slides]
+            carousel.slides = [1, 2, 3]
+            findByMediaSizeMock.mockReturnValue(2)
             carousel.handleTransition(1)
             expect(animationManagerSpy).toHaveBeenCalledTimes(1)
             expect(animationManagerSpy).toHaveBeenCalledWith(
@@ -561,6 +696,7 @@ describe('Carousel', () => {
                 prepFnSpy(),
                 primaryFnSpy()
             )
+            carousel.slides = tmp
         })
 
         it('sets resting to true', () => {
@@ -599,7 +735,7 @@ describe('Carousel', () => {
             const carousel = new Carousel(fooProps)
             carousel.duration = 3000
             const primaryFn = carousel.getPrimaryFn()
-            primaryFn([{content: 'bar'}])
+            primaryFn([{ content: 'bar' }])
             expect(executeAnimationSpy).toHaveBeenCalledWith(
                 [{ content: 'bar' }],
                 3000

@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/utility/replaceChildElement.js</title>
+    <title>Code coverage report for src/utility/sortObjectsByProperty.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/utility</a> replaceChildElement.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/utility</a> sortObjectsByProperty.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -39,7 +39,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
@@ -68,28 +68,37 @@
 <a name='L9'></a><a href='#L9'>9</a>
 <a name='L10'></a><a href='#L10'>10</a>
 <a name='L11'></a><a href='#L11'>11</a>
-<a name='L12'></a><a href='#L12'>12</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L12'></a><a href='#L12'>12</a>
+<a name='L13'></a><a href='#L13'>13</a>
+<a name='L14'></a><a href='#L14'>14</a>
+<a name='L15'></a><a href='#L15'>15</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
- * replaceChildElement replaces child element with new element
- * @param newElement HTMLElement
- * @param existingElement HTMLElement - element must be attached to a parentNode
+ * sortObjectsByProperty sorts array by value a given property
+ * @param {Array.&lt;Object&gt;} objs array of objects to sort
+ * @param {string} key key of the property to use in sort function
+ * @param {boolean} allowDuplicates throws error if set to false and two or more objects' property has the same value
+ * @returns {Array.&lt;Object&gt;} objs sorted by property
  */
-export const replaceChildElement = (newElement, existingElement) =&gt; {
-    if (newElement instanceof HTMLElement === false) throw 'el must be instance of HTMLElement'
-    if (existingElement instanceof HTMLElement === false) return false
-    if (existingElement.parentNode === null) return false
-    existingElement.parentNode.replaceChild(newElement, existingElement)
-    return true
+export const sortObjectsByProperty = (objs, key, allowDuplicates) =&gt; {
+    return [...objs].sort((a, b) =&gt; {
+        if (a[key] &lt; b[key]) return -1
+        if (a[key] &gt; b[key]) return 1
+        if (allowDuplicates !== true) throw `encountered duplicate value for objects: ${a} and ${b}`
+        return 0
+    })
 }</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->

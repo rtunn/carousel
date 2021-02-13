@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/utility/replaceChildElement.js</title>
+    <title>Code coverage report for src/utility/constructMediaQuery.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/utility</a> replaceChildElement.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/utility</a> constructMediaQuery.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
@@ -73,23 +73,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
- * replaceChildElement replaces child element with new element
- * @param newElement HTMLElement
- * @param existingElement HTMLElement - element must be attached to a parentNode
+ * constructMediaQuery creates a mediaQuery string
+ * @param {Object} queryObj 
+ * @param {string} query queryObj.query - valid media query type i.e. "min-width", "max-width", etc.
+ * @param {Number} comparisonValue queryObj.comparisonValue
+ * @param {string} unit queryObj.unit - unit to apply to comparisonValue
+ * @returns {string} used as argument in window.matchMedia
  */
-export const replaceChildElement = (newElement, existingElement) =&gt; {
-    if (newElement instanceof HTMLElement === false) throw 'el must be instance of HTMLElement'
-    if (existingElement instanceof HTMLElement === false) return false
-    if (existingElement.parentNode === null) return false
-    existingElement.parentNode.replaceChild(newElement, existingElement)
-    return true
+export const constructMediaQuery = (queryObj) =&gt; {
+    const unitName = queryObj.unit || ''
+    return `(${queryObj.query}: ${queryObj.comparisonValue}${unitName})`
 }</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
