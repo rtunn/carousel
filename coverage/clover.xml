@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1613176556581" clover="3.2.0">
-  <project timestamp="1613176556581" name="All files">
-    <metrics statements="289" coveredstatements="289" conditionals="109" coveredconditionals="109" methods="76" coveredmethods="76" elements="474" coveredelements="474" complexity="0" loc="289" ncloc="289" packages="4" files="24" classes="24"/>
+<coverage generated="1613518157062" clover="3.2.0">
+  <project timestamp="1613518157063" name="All files">
+    <metrics statements="287" coveredstatements="287" conditionals="109" coveredconditionals="109" methods="76" coveredmethods="76" elements="472" coveredelements="472" complexity="0" loc="287" ncloc="287" packages="4" files="24" classes="24"/>
     <package name="src">
       <metrics statements="33" coveredstatements="33" conditionals="12" coveredconditionals="12" methods="9" coveredmethods="9"/>
       <file name="animationManager.js" path="/home/roger/Apps/js-workspace/carousel/src/animationManager.js">
@@ -97,7 +97,7 @@
       </file>
     </package>
     <package name="src.components">
-      <metrics statements="136" coveredstatements="136" conditionals="45" coveredconditionals="45" methods="40" coveredmethods="40"/>
+      <metrics statements="134" coveredstatements="134" conditionals="45" coveredconditionals="45" methods="40" coveredmethods="40"/>
       <file name="Carousel.js" path="/home/roger/Apps/js-workspace/carousel/src/components/Carousel.js">
         <metrics statements="109" coveredstatements="109" conditionals="34" coveredconditionals="34" methods="34" coveredmethods="34"/>
         <line num="36" count="71" type="stmt"/>
@@ -225,23 +225,21 @@
         <line num="55" count="1" type="stmt"/>
       </file>
       <file name="SlideControl.js" path="/home/roger/Apps/js-workspace/carousel/src/components/SlideControl.js">
-        <metrics statements="16" coveredstatements="16" conditionals="10" coveredconditionals="10" methods="2" coveredmethods="2"/>
+        <metrics statements="14" coveredstatements="14" conditionals="10" coveredconditionals="10" methods="2" coveredmethods="2"/>
         <line num="8" count="2" type="stmt"/>
-        <line num="11" count="11" type="stmt"/>
-        <line num="13" count="11" type="cond" truecount="2" falsecount="0"/>
-        <line num="14" count="10" type="cond" truecount="2" falsecount="0"/>
-        <line num="15" count="9" type="cond" truecount="2" falsecount="0"/>
-        <line num="16" count="8" type="cond" truecount="2" falsecount="0"/>
-        <line num="18" count="7" type="cond" truecount="2" falsecount="0"/>
-        <line num="19" count="4" type="stmt"/>
-        <line num="20" count="4" type="stmt"/>
-        <line num="22" count="3" type="stmt"/>
-        <line num="23" count="3" type="stmt"/>
-        <line num="26" count="7" type="stmt"/>
-        <line num="27" count="7" type="stmt"/>
-        <line num="28" count="7" type="stmt"/>
-        <line num="29" count="7" type="stmt"/>
-        <line num="30" count="7" type="stmt"/>
+        <line num="10" count="9" type="stmt"/>
+        <line num="12" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="13" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="14" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="15" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="17" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="18" count="3" type="stmt"/>
+        <line num="20" count="2" type="stmt"/>
+        <line num="23" count="5" type="stmt"/>
+        <line num="24" count="5" type="stmt"/>
+        <line num="25" count="5" type="stmt"/>
+        <line num="26" count="5" type="stmt"/>
+        <line num="37" count="5" type="stmt"/>
       </file>
     </package>
     <package name="src.utility">

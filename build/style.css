@@ -64,3 +64,13 @@
     font-size: 32px;
     width: 50px;
 }
+
+.carousel-chevron {
+    height:40px;
+    width:40px;
+    font-size:32px;
+}
+
+.prev .carousel-chevron {
+    transform: rotate(180deg)
+}

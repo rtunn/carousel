@@ -44,11 +44,6 @@ describe('slideControl', () => {
             onClick: onclickMock
         }
 
-        it('returns element with innerHTML === "&lt;"', () => {
-            const el = slideControl(props)
-            expect(el.innerHTML).toBe("&lt;")
-        })
-
         it('sets onclick listener with correct arguments', () => {
             const el = slideControl(props)
             el.click()
@@ -67,11 +62,6 @@ describe('slideControl', () => {
             btnType: 'next',
             onClick: onclickMock
         }
-
-        it('returns element with innerHTML === "&gt;"', () => {
-            const el = slideControl(props)
-            expect(el.innerHTML).toBe("&gt;")
-        })
 
         it('sets onclick listener with correct arguments', () => {
             const el = slideControl(props)
