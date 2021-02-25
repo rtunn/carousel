@@ -63,6 +63,7 @@
     border: none;
     font-size: 32px;
     width: 50px;
+    padding: 0;
 }
 
 .carousel-chevron {
