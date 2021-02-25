@@ -7,8 +7,8 @@ import Carousel from '../components/Carousel'
  */
 export const initCarousels = (defaultProps) => {
     const carouselElements = document.querySelectorAll('.Carousel')
-    for (let el of carouselElements) {
-        const props = getCarouselProps(el, defaultProps)
+    for (let i=0; i < carouselElements.length; i++) {
+        const props = getCarouselProps(carouselElements[i], defaultProps)
         const carousel = new Carousel(props)
         carousel.update()
     }
