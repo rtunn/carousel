@@ -9,9 +9,9 @@ Add the following lines to the head of your html file.
 ```html
 <link
     rel="stylesheet"
-    href="https://raw.githubusercontent.com/rtunn/carousel/main/build/style.css"
+    href="https://gitcdn.link/repo/rtunn/carousel/main/build/style.css"
 />
-<script src="https://raw.githubusercontent.com/rtunn/carousel/main/build/bundle.js"></script>
+<script src="https://gitcdn.link/repo/rtunn/carousel/main/build/bundle.js"></script>
 ```
 
 ## Usage
